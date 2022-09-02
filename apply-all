@@ -1,0 +1,31 @@
+#!/bin/bash
+
+scp reg1-10.169.250.80-extensions.conf root@10.169.250.80:/etc/asterisk/data/
+scp reg1-10.169.250.81-extensions.conf root@10.169.250.81:/etc/asterisk/data/
+scp reg2-10.169.250.83-extensions.conf root@10.169.250.83:/etc/asterisk/data/
+scp reg2-10.169.250.84-extensions.conf root@10.169.250.84:/etc/asterisk/data/
+scp g2-10.169.250.94-extensions.conf root@10.169.250.94:/etc/asterisk/data/
+scp g1-10.169.250.97-extensions.conf root@10.169.250.97:/etc/asterisk/data/
+
+scp reg1-10.169.250.80-sip.conf root@10.169.250.80:/etc/asterisk/data/
+scp reg1-10.169.250.81-sip.conf root@10.169.250.81:/etc/asterisk/data/
+scp reg2-10.169.250.83-sip.conf root@10.169.250.83:/etc/asterisk/data/
+scp reg2-10.169.250.84-sip.conf root@10.169.250.84:/etc/asterisk/data/
+scp g2-10.169.250.94-sip.conf root@10.169.250.94:/etc/asterisk/data/
+scp g1-10.169.250.97-sip.conf root@10.169.250.97:/etc/asterisk/data/
+
+
+for ip in 10.169.250.80 10.169.250.81 10.169.250.83 10.169.250.84 10.169.250.97 10.169.250.94
+do
+	echo $ip
+	ssh -t root@${ip} <<END
+	asterisk -rx "sip reload"
+	asterisk -rx "dialplan reload"
+END
+done
+
+scp ipphone.sh root@10.169.250.99:/var/www/html/gmicom/
+ssh root@10.169.250.99 "cd /var/www/html/gmicom ; sh ipphone.sh "
+
+scp akuvox-dir.xml root@10.169.250.99:/var/www/html/akuvox/
+
